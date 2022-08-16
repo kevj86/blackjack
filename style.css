@@ -3,6 +3,16 @@
   src: url(fonts/HighSchool.ttf);
 }
 
+@font-face {
+  font-family: 'Romance Logic';
+  src: url('fonts/RomanceLogic.ttf');
+}
+
+:root {
+  --clr-yellow: #f4d03f;
+  --clr-gold: #F7DC6F;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -23,4 +33,83 @@ h1 {
   color: #f4d03f;
   text-shadow: 5px 5px #000;
   font-size: 4rem;
+  padding-bottom: 2rem;
+}
+
+#welcome, h2 {
+  font-family: 'Romance Logic';
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px #000;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.top {
+  height: 200px;
+  border: 2px solid var(--clr-gold);
+  border-radius: 15px;
+  width: 600px;
+  margin: 1rem 0;
+  padding: 2rem;
+
+  text-align: center;
+}
+
+#game-play {
+  height: 400px;
+  width: 600px;
+  border: 2px solid var(--clr-gold);
+  border-radius: 15px;
+  margin: 1rem 0;
+  padding: 2rem;
+}
+
+#game-nav{
+  height: 100px;
+  width: 600px;
+  border: 2px solid var(--clr-gold);
+  border-radius: 15px;
+  margin: 1rem 0;
+
+
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-box {
+  background-color: #F1C40F;
+  color: #000;
+  width: 100px;
+  height: 50px;
+
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+
+  cursor: pointer;
+}
+
+#game-play {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#player-display {
+  font-family: 'Romance Logic';
+  font-weight: bold;
+  color: #fff;
+  font-size: 2rem;
+  text-shadow: 2px 2px #000;
 }
