@@ -77,14 +77,12 @@ startGame.addEventListener("click", function () {
 
 cardHit.addEventListener("click", function () {
   getCard();
-  playerDisplay.innerHTML = ``;
-  playerCount = 0;
   showCards();
+  playerCount = 0;
+  playerDisplay.innerHTML = ``;
   playerName.textContent = `Player: ${playerCount}`;
-  displayMessage();
-  console.log(playerCards);
-  console.log(playerCount);
 });
+
 cardStand.addEventListener("click", function () {
   renderStand();
 });
@@ -141,33 +139,46 @@ function reset() {
   chipCount = 0;
   playerDisplay.innerHTML = ``;
   dealerDisplay.innerHTML = ``;
+  message.innerHTML = ``;
   console.clear();
 }
 
 function displayMessage() {
-  if (playerCount > 21) {
-    message.innerHTML += `BUSTED`;
+  if (dealerCount === playerCount) {
+    message.textContent = `PUSH`
+  } else if (playerCount > dealerCount) {
+    message.textContent = `YOU WIN!`
+  } else {
+    message.textContent = `HOUSE WINS!`
   }
+  
 }
 
 function renderStand() {
-  getDealerCard();
-  dealerDisplay.innerHTML = `<img src="${dealerCards[0].image}" alt="" class="card-image"> <img src="${dealerCards[1].image}" alt="" class="card-image">`;
-  dealerCount += dealerCards[1].count;
-  dealerName.textContent = `Dealer: ${dealerCount}`;
-}
+getDealerCard()
+displayDealerCard()
+displayMessage()
 
-function dealerValidation() {
-  if (dealerCount >= 16) {
-    if (playerCount === dealerCount) {
-      message.innerHTML += `PUSH`;
-    }
-  } else if (dealerCount < 16) {
-  }
 }
 
 function getDealerCard() {
   let randomCard = Math.floor(Math.random(1) * cardArray.length);
-  dealerCards.push(cardArray[randomCard]);
-  cardArray.splice(randomCard, 1);
+for (let i = 0; i < 8; i++) {
+  if (dealerCount <= 16) {
+    dealerCards.push(cardArray[randomCard]);
+    cardArray.splice(randomCard, 1);
+    dealerCount += dealerCards[randomCard].count;
+  }
 }
+
+
+}
+
+
+function displayDealerCard() {
+  for (let i = 0; i < dealerCards.length; i++) {
+      dealerDisplay.innerHTML += `<img src="${dealerCards[0].image}" alt="" class="card-image">`
+      dealerName.textContent = `Dealer: ${dealerCount}`;
+  }
+}
+
