@@ -77,25 +77,19 @@ startGame.addEventListener("click", function () {
 
 cardHit.addEventListener("click", function () {
   getCard();
-  showCards();
   playerCount = 0;
   playerDisplay.innerHTML = ``;
+  showCards();
   playerName.textContent = `Player: ${playerCount}`;
+
+  if (playerCount > 21) {
+    message.innerHTML = `BUSTED`;
+  }
 });
 
 cardStand.addEventListener("click", function () {
   renderStand();
 });
-
-function cardDealer() {
-  let randomCard = Math.floor(Math.random(1) * cardArray.length);
-  dealerCards.push(cardArray[randomCard]);
-  cardArray.splice(randomCard, 1);
-  console.log(dealerCards);
-  dealerDisplay.innerHTML = `<img src="${dealerCards[0].image}" alt="" class="card-image"> <img src="/images/cards/red.svg" alt="" class="card-image">`;
-  dealerCount = dealerCards[0].count;
-  dealerName.textContent = `Dealer: ${dealerCount}`;
-}
 
 function showCards() {
   for (let i = 0; i < playerCards.length; i++) {
@@ -109,7 +103,6 @@ function getCard() {
   let randomCard = Math.floor(Math.random(1) * cardArray.length);
   let cardName = cardArray[randomCard].count;
   if (playerCount > 21) {
-    console.log("BUSTED");
     cardHit.disabled = "true";
   } else if (playerCount > 11 && cardArray[randomCard].name === "Ace") {
     cardArray[randomCard].count = 1;
@@ -119,6 +112,15 @@ function getCard() {
     playerCards.push(cardArray[randomCard]);
     cardArray.splice(randomCard, 1);
   }
+}
+
+function cardDealer() {
+  let randomCard = Math.floor(Math.random(1) * cardArray.length);
+  dealerCards.push(cardArray[randomCard]);
+  cardArray.splice(randomCard, 1);
+  dealerDisplay.innerHTML = `<img src="${dealerCards[0].image}" alt="" class="card-image"> <img src="/images/cards/red.svg" alt="" class="card-image">`;
+  dealerCount = dealerCards[0].count;
+  dealerName.textContent = `Dealer: ${dealerCount}`;
 }
 
 function render() {
@@ -143,42 +145,28 @@ function reset() {
   console.clear();
 }
 
-function displayMessage() {
-  if (dealerCount === playerCount) {
-    message.textContent = `PUSH`
-  } else if (playerCount > dealerCount) {
-    message.textContent = `YOU WIN!`
-  } else {
-    message.textContent = `HOUSE WINS!`
-  }
-  
+function renderStand() {
+  displayDealerCard();
 }
 
-function renderStand() {
-getDealerCard()
-displayDealerCard()
-displayMessage()
-
+function displayDealerCard() {
+  for (let i = 0; i < dealerCards.length; i++) {
+    dealerDisplay.innerHTML = ``;
+    dealerDisplay.innerHTML += `<img src="${dealerCards[0].image}" alt="" class="card-image">`;
+    dealerName.textContent = `Dealer: ${dealerCount}`;
+  }
 }
 
 function getDealerCard() {
   let randomCard = Math.floor(Math.random(1) * cardArray.length);
-for (let i = 0; i < 8; i++) {
-  if (dealerCount <= 16) {
-    dealerCards.push(cardArray[randomCard]);
+  if (dealerCount > 21) {
+    console.log(`BUSTED`);
+  } else if (playerCount > 11 && cardArray[randomCard].name === "Ace") {
+    cardArray[randomCard].count = 1;
+    playerCards.push(cardArray[randomCard]);
     cardArray.splice(randomCard, 1);
-    dealerCount += dealerCards[randomCard].count;
+  } else {
+    playerCards.push(cardArray[randomCard]);
+    cardArray.splice(randomCard, 1);
   }
 }
-
-
-}
-
-
-function displayDealerCard() {
-  for (let i = 0; i < dealerCards.length; i++) {
-      dealerDisplay.innerHTML += `<img src="${dealerCards[0].image}" alt="" class="card-image">`
-      dealerName.textContent = `Dealer: ${dealerCount}`;
-  }
-}
-
