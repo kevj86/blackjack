@@ -73,6 +73,7 @@ const gameStarted = false;
 
 startGame.addEventListener("click", function () {
   render();
+  gameStarted = True;
 });
 
 cardHit.addEventListener("click", function () {
@@ -80,6 +81,7 @@ cardHit.addEventListener("click", function () {
   playerCount = 0;
   playerDisplay.innerHTML = ``;
   showCards();
+  verifyPlayerAce();
   playerName.textContent = `Player: ${playerCount}`;
 
   if (playerCount > 21) {
@@ -101,17 +103,8 @@ function showCards() {
 
 function getCard() {
   let randomCard = Math.floor(Math.random(1) * cardArray.length);
-  let cardName = cardArray[randomCard].count;
-  if (playerCount > 21) {
-    cardHit.disabled = "true";
-  } else if (playerCount > 11 && cardArray[randomCard].name === "Ace") {
-    cardArray[randomCard].count = 1;
-    playerCards.push(cardArray[randomCard]);
-    cardArray.splice(randomCard, 1);
-  } else {
-    playerCards.push(cardArray[randomCard]);
-    cardArray.splice(randomCard, 1);
-  }
+  playerCards.push(cardArray[randomCard]);
+  cardArray.splice(randomCard, 1);
 }
 
 function cardDealer() {
@@ -129,8 +122,6 @@ function render() {
   getCard();
   showCards();
   cardDealer();
-  console.log(playerCount);
-  console.log(playerCards);
 }
 
 function reset() {
@@ -146,27 +137,44 @@ function reset() {
 }
 
 function renderStand() {
+  dealerDisplay.innerHTML = ``;
+  getDealerCard();
   displayDealerCard();
 }
 
 function displayDealerCard() {
   for (let i = 0; i < dealerCards.length; i++) {
-    dealerDisplay.innerHTML = ``;
-    dealerDisplay.innerHTML += `<img src="${dealerCards[0].image}" alt="" class="card-image">`;
+    dealerDisplay.innerHTML += `<img src="${dealerCards[i].image}" alt="" class="card-image">`;
     dealerName.textContent = `Dealer: ${dealerCount}`;
   }
 }
 
 function getDealerCard() {
-  let randomCard = Math.floor(Math.random(1) * cardArray.length);
-  if (dealerCount > 21) {
-    console.log(`BUSTED`);
-  } else if (playerCount > 11 && cardArray[randomCard].name === "Ace") {
-    cardArray[randomCard].count = 1;
-    playerCards.push(cardArray[randomCard]);
-    cardArray.splice(randomCard, 1);
-  } else {
-    playerCards.push(cardArray[randomCard]);
-    cardArray.splice(randomCard, 1);
+  for (let i = 0; i < 20; i++) {
+    if (dealerCount <= 16) {
+      let randomCard = Math.floor(Math.random(1) * cardArray.length);
+      dealerCards.push(cardArray[randomCard]);
+      dealerCount += cardArray[randomCard].count;
+      cardArray.splice(randomCard, 1);
+      verifyDealerAce();
+    }
+  }
+}
+
+function verifyDealerAce() {
+  for (let i = 0; i < dealerCards.length; i++) {
+    if (dealerCount > 16 && dealerCards[i].name === "Ace") {
+      dealerCards[i].name = "usedAce";
+      dealerCount -= 10;
+    }
+  }
+}
+
+function verifyPlayerAce() {
+  for (let i = 0; i < playerCards.length; i++) {
+    if (playerCount > 21 && playerCards[i].name === "Ace") {
+      playerCards[i].name = "usedAce";
+      playerCount -= 10;
+    }
   }
 }
