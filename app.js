@@ -73,6 +73,9 @@ const gameStarted = false;
 
 startGame.addEventListener("click", function () {
   render();
+  dealerDisplay.innerHTML = `<img src="${dealerCards[0].image}" alt="" class="card-image"> <img src="/images/cards/red.svg" alt="" class="card-image">`;
+  dealerCount = dealerCards[0].count;
+  dealerName.textContent = `Dealer: ${dealerCount}`;
   gameStarted = True;
 });
 
@@ -111,9 +114,6 @@ function cardDealer() {
   let randomCard = Math.floor(Math.random(1) * cardArray.length);
   dealerCards.push(cardArray[randomCard]);
   cardArray.splice(randomCard, 1);
-  dealerDisplay.innerHTML = `<img src="${dealerCards[0].image}" alt="" class="card-image"> <img src="/images/cards/red.svg" alt="" class="card-image">`;
-  dealerCount = dealerCards[0].count;
-  dealerName.textContent = `Dealer: ${dealerCount}`;
 }
 
 function render() {
@@ -143,15 +143,19 @@ function renderStand() {
 }
 
 function displayDealerCard() {
+  let displayCount = 0;
   for (let i = 0; i < dealerCards.length; i++) {
-    dealerDisplay.innerHTML += `<img src="${dealerCards[i].image}" alt="" class="card-image">`;
-    dealerName.textContent = `Dealer: ${dealerCount}`;
+    setTimeout(function () {
+      dealerDisplay.innerHTML += `<img src="${dealerCards[i].image}" alt="" class="card-image card-animation">`;
+      displayCount += dealerCards[i].count;
+      dealerName.textContent = `Dealer: ${displayCount}`;
+    }, i * 2000);
   }
 }
 
 function getDealerCard() {
   for (let i = 0; i < 20; i++) {
-    if (dealerCount <= 16) {
+    if (dealerCount < 16) {
       let randomCard = Math.floor(Math.random(1) * cardArray.length);
       dealerCards.push(cardArray[randomCard]);
       dealerCount += cardArray[randomCard].count;
@@ -161,9 +165,11 @@ function getDealerCard() {
   }
 }
 
+// VERIFY ACE CARDS IN PLAYER AND DEALER CARDS //
+
 function verifyDealerAce() {
   for (let i = 0; i < dealerCards.length; i++) {
-    if (dealerCount > 16 && dealerCards[i].name === "Ace") {
+    if (dealerCount > 21 && dealerCards[i].name === "Ace") {
       dealerCards[i].name = "usedAce";
       dealerCount -= 10;
     }
@@ -178,3 +184,5 @@ function verifyPlayerAce() {
     }
   }
 }
+
+// ******************************************* //
