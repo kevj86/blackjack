@@ -73,7 +73,7 @@ const gameStarted = false;
 
 startGame.addEventListener("click", function () {
   render();
-  dealerDisplay.innerHTML = `<img src="${dealerCards[0].image}" alt="" class="card-image"> <img src="/images/cards/red.svg" alt="" class="card-image">`;
+  dealerDisplay.innerHTML = `<img src="${dealerCards[0].image}" alt="" class="card-image card-animation"> <img src="/images/cards/red.svg" alt="" class="card-image card-animation">`;
   dealerCount = dealerCards[0].count;
   dealerName.textContent = `Dealer: ${dealerCount}`;
   gameStarted = True;
@@ -98,7 +98,7 @@ cardStand.addEventListener("click", function () {
 
 function showCards() {
   for (let i = 0; i < playerCards.length; i++) {
-    playerDisplay.innerHTML += `<img src="${playerCards[i].image}" alt="" class="card-image">`;
+    playerDisplay.innerHTML += `<img src="${playerCards[i].image}" alt="" class="card-image card-animation">`;
     playerCount += playerCards[i].count;
     playerName.textContent = `Player: ${playerCount}`;
   }
